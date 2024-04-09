@@ -9,6 +9,7 @@ const Login = () => {
     <div>
       <Home/>
       <img src={ImageBackground} alt="" />
+      <h1 className='flex bg-red-900'>Login</h1>
     </div>
   )
 }
