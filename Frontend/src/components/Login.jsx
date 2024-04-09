@@ -1,18 +1,21 @@
 import React, { useRef, useState } from 'react'
 import Home from './Home'
 import ImageBackground from "../assets/images/Background.jpg";
-import { useReducer } from 'react';
+// import { useReducer } from 'react';
 import { validateData } from '../utils/validate';
-import { createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../utils/firebase';
-
+import {useDispatch} from 'react-redux'
+import { addUser } from '../utils/userSlice';
+import {useNavigate} from 'react-router-dom'
 
 
 const Login = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState(null);
-
+  const disPatch = useDispatch();
+  const navigate = useNavigate();
   const handleSignup = () => {
     setIsLogin(!isLogin);
   }
@@ -22,6 +25,7 @@ const Login = () => {
   const password = useRef();
 
   const handleValidate = () => {
+
     // console.log(email.current.value,password.current.value);
 
     let messsage = validateData(email.current.value, password.current.value);
@@ -36,6 +40,25 @@ const Login = () => {
           // Signed up 
           const user = userCredential.user;
           console.log(user);
+
+          
+
+          if (auth) {
+            disPatch(addUser({
+              id: auth.uid,
+              name: auth.displayName,
+              email: auth.email,
+              photoURL: auth.photoURL
+            }))
+            navigate('/browse')
+;            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            // ...
+          } else {
+            // No user is signed in.
+            console.log("no user");
+          }
+
           // ...
         })
         .catch((error) => {
@@ -45,19 +68,26 @@ const Login = () => {
           // ..
         });
     }
-    else {  
-      signInWithEmailAndPassword(auth,email.current.value, password.current.value)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(errorCode + ': ' + errorMessage);
-      });
+    else {
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          console.log(user);
+          disPatch(addUser({
+            id: auth.uid,
+            name: auth.displayName,
+            email: auth.email,
+            photoURL: auth.photoURL
+          }))
+          navigate('/browse')
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setError(errorCode + ': ' + errorMessage);
+        });
     }
   }
 
@@ -77,7 +107,7 @@ const Login = () => {
           !isLogin && (
             <div>
               <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='UserName' />
-              
+
               {/* <input type="password" name="ConfirmPassword" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='ConfirmPassword' /> */}
 
             </div>
