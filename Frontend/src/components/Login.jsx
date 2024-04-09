@@ -3,7 +3,7 @@ import Home from './Home'
 import ImageBackground from "../assets/images/Background.jpg";
 import { useReducer } from 'react';
 import { validateData } from '../utils/validate';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from '../utils/firebase';
 
 
@@ -45,8 +45,19 @@ const Login = () => {
           // ..
         });
     }
-    else {
-
+    else {  
+      signInWithEmailAndPassword(auth,email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorCode + ': ' + errorMessage);
+      });
     }
   }
 
@@ -60,12 +71,13 @@ const Login = () => {
         <h1 className='text-white font-bold flex justify-center items-center'>
           {!isLogin ? 'SignUp' : "SignIn"}
         </h1>
-        <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='UserName' />
+        <input type="text" name="email" placeholder='Email' ref={email} className='p-4 my-4 w-full bg-gray-700 text-white' />
         <input type="password" name="password" className='p-4 my-4 w-full bg-gray-700 text-white' ref={password} placeholder='password' />
         {
           !isLogin && (
             <div>
-              <input type="text" name="email" placeholder='Email' ref={email} className='p-4 my-4 w-full bg-gray-700 text-white' />
+              <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='UserName' />
+              
               {/* <input type="password" name="ConfirmPassword" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='ConfirmPassword' /> */}
 
             </div>
