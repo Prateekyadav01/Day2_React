@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import Home from './Home'
 import ImageBackground from "../assets/images/Background.jpg";
 import { useReducer } from 'react';
-import { validateData } from '../utils/Validate';
+import { validateData } from '../utils/validate';
 
 
 
@@ -23,6 +23,7 @@ const Login = () => {
       // console.log(email.current.value,password.current.value);
 
       let messsage =validateData(email.current.value,password.current.value);
+      console.log(messsage)
       setError(messsage);
   }
 
@@ -36,13 +37,13 @@ const Login = () => {
         <h1 className='text-white font-bold flex justify-center items-center'>
           {!isLogin ? 'SignUp' : "SignIn"}
         </h1>
-        <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700' ref={email} placeholder='UserName' />
-        <input type="password" name="password" className='p-4 my-4 w-full bg-gray-700' ref={password} placeholder='password' />
+        <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' ref={email} placeholder='UserName' />
+        <input type="password" name="password" className='p-4 my-4 w-full bg-gray-700 text-white' ref={password} placeholder='password' />
         {
           !isLogin && (
             <div>
-              <input type="text" name="email" placeholder='Email' className='p-4 my-4 w-full bg-gray-700' />
-              <input type="password" name="ConfirmPassword" className='p-4 my-4 w-full bg-gray-700' placeholder='ConfirmPassword' />
+              <input type="text" name="email" placeholder='Email' className='p-4 my-4 w-full bg-gray-700 text-white' />
+              <input type="password" name="ConfirmPassword" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='ConfirmPassword' />
 
             </div>
           )
