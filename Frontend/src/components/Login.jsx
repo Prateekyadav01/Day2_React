@@ -3,13 +3,15 @@ import Home from './Home'
 import ImageBackground from "../assets/images/Background.jpg";
 import { useReducer } from 'react';
 import { validateData } from '../utils/validate';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../utils/firebase';
 
 
 
 const Login = () => {
 
   const [isLogin, setIsLogin] = useState(true);
-  const [error, setError]=useState(null);
+  const [error, setError] = useState(null);
 
   const handleSignup = () => {
     setIsLogin(!isLogin);
@@ -19,12 +21,33 @@ const Login = () => {
   const email = useRef();
   const password = useRef();
 
-  const handleValidate=()=>{
-      // console.log(email.current.value,password.current.value);
+  const handleValidate = () => {
+    // console.log(email.current.value,password.current.value);
 
-      let messsage =validateData(email.current.value,password.current.value);
-      console.log(messsage)
-      setError(messsage);
+    let messsage = validateData(email.current.value, password.current.value);
+    console.log(messsage)
+    setError(messsage);
+
+    if (messsage) return;
+
+    if (!isLogin) {
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          // Signed up 
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setError(errorCode + "" + errorMessage);
+          // ..
+        });
+    }
+    else {
+
+    }
   }
 
   return (
@@ -33,17 +56,17 @@ const Login = () => {
       <div className='absolute'>
         <img src={ImageBackground} alt="" className='relative' />
       </div>
-      <form onSubmit={(e)=>e.preventDefault()}className='absolute bg-black w-3/12 p-12 mx-auto right-0 left-0 top-44 text-black rounded' >
+      <form onSubmit={(e) => e.preventDefault()} className='absolute bg-black w-3/12 p-12 mx-auto right-0 left-0 top-44 text-black rounded' >
         <h1 className='text-white font-bold flex justify-center items-center'>
           {!isLogin ? 'SignUp' : "SignIn"}
         </h1>
-        <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' ref={email} placeholder='UserName' />
+        <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='UserName' />
         <input type="password" name="password" className='p-4 my-4 w-full bg-gray-700 text-white' ref={password} placeholder='password' />
         {
           !isLogin && (
             <div>
-              <input type="text" name="email" placeholder='Email' className='p-4 my-4 w-full bg-gray-700 text-white' />
-              <input type="password" name="ConfirmPassword" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='ConfirmPassword' />
+              <input type="text" name="email" placeholder='Email' ref={email} className='p-4 my-4 w-full bg-gray-700 text-white' />
+              {/* <input type="password" name="ConfirmPassword" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='ConfirmPassword' /> */}
 
             </div>
           )
