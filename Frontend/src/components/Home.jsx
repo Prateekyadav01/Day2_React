@@ -11,7 +11,10 @@ const Home = () => {
   const navigate = useNavigate();
   const disPatch = useDispatch();
   const user = useSelector((store) => store.user);
-  console.log(user);
+ 
+  // console.log(user.photoURL);
+  // const imageData = user.photoURL;
+  // console.log(imageData);
 
   const handleLogout = () => {
    signOut(auth).then(()=>{})
@@ -23,7 +26,7 @@ const Home = () => {
 
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unSubscribe =onAuthStateChanged(auth, (user) => {
       if (user) {
 
         const { uid, email , displayName , photoURL } = user;
@@ -37,13 +40,19 @@ const Home = () => {
         navigate("/");
       }
     });
+    return ()=> unSubscribe();
   }, [])
 
   return (
     <div className="relative">
       <div className="absolute top-0 left-0 right-0 z-10 px-4 py-2 flex justify-between items-center">
         <img src={logo} alt="logo" className="w-24" />
-        {user && <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white rounded">Sign Out</button>}
+        {user && (
+          <div>
+            {/* <img src={imageData} alt="" /> */}
+            <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white rounded">Sign Out</button>
+            </div>
+        )}
       </div>
     </div>
   );
