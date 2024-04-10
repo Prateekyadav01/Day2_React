@@ -12,9 +12,7 @@ const Home = () => {
   const disPatch = useDispatch();
   const user = useSelector((store) => store.user);
  
-  // console.log(user.photoURL);
-  // const imageData = user.photoURL;
-  // console.log(imageData);
+
 
   const handleLogout = () => {
    signOut(auth).then(()=>{})
@@ -49,7 +47,7 @@ const Home = () => {
         <img src={logo} alt="logo" className="w-24" />
         {user && (
           <div>
-            {/* <img src={imageData} alt="" /> */}
+            <img src={user?.photoURL} alt="imageUser" className='w-12 h-12' />
             <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white rounded">Sign Out</button>
             </div>
         )}
