@@ -3,7 +3,7 @@ import Home from './Home'
 import ImageBackground from "../assets/images/Background.jpg";
 // import { useReducer } from 'react';
 import { validateData } from '../utils/validate';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/firebase';
 import {useDispatch} from 'react-redux'
 import { addUser } from '../utils/userSlice';
@@ -23,6 +23,7 @@ const Login = () => {
 
   const email = useRef();
   const password = useRef();
+  const name = useRef();
 
   const handleValidate = () => {
 
@@ -40,26 +41,24 @@ const Login = () => {
           // Signed up 
           const user = userCredential.user;
           console.log(user);
+          updateProfile(user,{
+            displayName:name.current.value,
+            photoURL:"https://www.google.com/imgres?q=images&imgurl=https%3A%2F%2Fimages.ctfassets.net%2Fhrltx12pl8hq%2F28ECAQiPJZ78hxatLTa7Ts%2F2f695d869736ae3b0de3e56ceaca3958%2Ffree-nature-images.jpg%3Ffit%3Dfill%26w%3D1200%26h%3D630&imgrefurl=https%3A%2F%2Fwww.shutterstock.com%2Fdiscover%2Ffree-nature-images&docid=uEeA4F2Pf5UbvM&tbnid=0E5dDA82VanW3M&vet=12ahUKEwjoh4icnbeFAxUMZ2wGHZqECYAQM3oECBYQAA..i&w=1200&h=630&hcb=2&ved=2ahUKEwjoh4icnbeFAxUMZ2wGHZqECYAQM3oECBYQAA",
 
-          
-
-          if (auth) {
-            disPatch(addUser({
-              id: auth.uid,
-              name: auth.displayName,
-              email: auth.email,
-              photoURL: auth.photoURL
-            }))
-            navigate('/browse')
-;            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/auth.user
-            // ...
-          } else {
-            // No user is signed in.
-            console.log("no user");
-          }
-
-          // ...
+          }).then(()=>{
+            const {uid , email , displayName,photoURL} = auth.currentUser;
+            disPatch(
+              addUser({
+                uid:uid,
+                email:email,
+                displayName:displayName,
+                photoURL:photoURL
+              })
+            )
+          })
+        //  else {
+        //     console.log("no user");
+        //   }
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -74,14 +73,6 @@ const Login = () => {
           // Signed in 
           const user = userCredential.user;
           console.log(user);
-          disPatch(addUser({
-            id: auth.uid,
-            name: auth.displayName,
-            email: auth.email,
-            photoURL: auth.photoURL
-          }))
-          navigate('/browse')
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -106,7 +97,7 @@ const Login = () => {
         {
           !isLogin && (
             <div>
-              <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='UserName' />
+              <input type="text" name="firstName" className='p-4 my-4 w-full bg-gray-700 text-white' ref={name} placeholder='UserName' />
 
               {/* <input type="password" name="ConfirmPassword" className='p-4 my-4 w-full bg-gray-700 text-white' placeholder='ConfirmPassword' /> */}
 
