@@ -1,13 +1,20 @@
-import React from 'react'
-import { useBackground } from '../../utils/useBackground'
+import React, { useState } from 'react'
+import  useBackground  from '../../utils/useBackground'
+import {useSelector} from 'react-redux';
 
 const Background = () => {
 
-  const result =useBackground();
-  console.log(result);
+  const movieData = useSelector((store)=>store.movie?.nowPlayingMovie);
+  console.log(movieData);
+ 
+  if(!movieData) return;
+ 
+  useBackground();
+
+
   return (
     <div>
-      
+         
     </div>
   )
 }

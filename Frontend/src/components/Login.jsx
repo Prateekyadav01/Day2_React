@@ -43,7 +43,7 @@ const Login = () => {
           console.log(user);
           updateProfile(user,{
             displayName:name.current.value,
-            photoURL:{ImageBackground},
+            photoURL:ImageBackground,
 
           }).then(()=>{
             const {uid , email , displayName,photoURL} = auth.currentUser;
