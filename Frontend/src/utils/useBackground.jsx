@@ -16,11 +16,6 @@ const useBackground = () => {
     useEffect(() => {
         data();
     }, [])
-  return (
-    <div>
-      
-    </div>
-  )
 }
 
 export default useBackground;
