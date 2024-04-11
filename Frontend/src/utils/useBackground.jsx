@@ -3,7 +3,6 @@ import { API_CONSTANT } from "./Constant";
 import { useDispatch } from 'react-redux'
 import { addMovie } from "./movieSlice";
 
-import React from 'react'
 
 const useBackground = () => {
     const dispatch = useDispatch();
@@ -15,7 +14,7 @@ const useBackground = () => {
     }
     useEffect(() => {
         data();
-    }, [])
-}
+    }, []);
+};
 
 export default useBackground;

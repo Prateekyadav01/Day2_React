@@ -1,23 +1,17 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const movieSlice = createSlice({
-    name:'movie',
-    initialState:{
-        nowPlayingMovies:null,
+    name: 'movie',
+    initialState: {
+        nowPlayingMovies: null,
     },
-    reducers:{
-        addMovie:(state,action)=>{
-           state.nowPlayingMovies = action.payload;
-        },
-        removeMovie:(state,action)=>{
-            return null;
+    reducers: {
+        addMovie: (state, action) => {
+            state.nowPlayingMovies = action.payload;
         }
     }
 });
 
-export const {addMovie, removeMovie} = movieSlice.actions;
+export const { addMovie } = movieSlice.actions;
 
 export default movieSlice.reducer;
-
-
-// 1kg tagar or 250gm khooyyaa
