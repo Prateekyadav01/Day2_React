@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import useBackground from '../../utils/useBackground'
 import { useSelector } from "react-redux"
+import Home from '../Home';
 
 const Background = () => {
 
     const movieData = useSelector((store) => store.movie?.nowPlayingMovies);
-    
-    console.log(movieData)
+
+    // console.log(movieData)
     if (!movieData || movieData.length === 0) {
         console.log("No movie data");
-        return <div>No movie data</div>; 
+        return <div>No movie data</div>;
     }
 
     const mainMovie = movieData[0];
@@ -17,8 +17,8 @@ const Background = () => {
 
 
     return (
-        <div className='flex top-10'>
-            <h1 className='flex top-20'>{original_title}</h1>
+        <div className='flex text-white font-bold bg-red-900 '>
+            hy
         </div>
     )
 }

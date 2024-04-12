@@ -42,17 +42,18 @@ const Home = () => {
   }, [])
 
   return (
-    <div className="relative">
-      <div className="absolute  top-0 left-0 right-0 z-10 px-4 py-2 flex justify-between items-center">
-        <img src={logo} alt="logo" className="w-24" />
-        {user && (
-          <div>
-            <img src={user?.photoURL} alt="imageUser" className='w-12 h-12' />
-            <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white rounded">Sign Out</button>
-            </div>
-        )}
-      </div>
+    <div class="relative">
+    <div class="absolute top-0 left-0 right-0 px-4 py-2 flex justify-between items-center bg-gray-900 text-white">
+      <img src={logo} alt="logo" class="w-24" />
+      {user && (
+        <div class="flex items-center">
+          <img src={user?.photoURL} alt="imageUser" class="w-12 h-12 rounded-full" />
+          <button onClick={handleLogout} class="ml-4 px-4 py-2 bg-red-600 hover:bg-red-700 rounded text-white">Sign Out</button>
+        </div>
+      )}
     </div>
+  </div>
+  
   );
 };
 
