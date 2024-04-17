@@ -10,7 +10,7 @@ const Browse = () => {
   useBackground()
   return (
     <>
-    {/* <Home/> */}
+    <Home/>
     
      <Background/>
      <Movies/>

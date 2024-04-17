@@ -30,7 +30,7 @@ const Login = () => {
     // console.log(email.current.value,password.current.value);
 
     let messsage = validateData(email.current.value, password.current.value);
-    console.log(messsage)
+    // console.log(messsage)
     setError(messsage);
 
     if (messsage) return;

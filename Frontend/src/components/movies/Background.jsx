@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux"
 import Home from '../Home';
+import MainContainer from './MainContainer';
+import SecondaryContainer from './SecondaryContainer';
 
 const Background = () => {
 
     const movieData = useSelector((store) => store.movie?.nowPlayingMovies);
-    console.log(movieData)
+    // console.log(movieData)
 
 
 
@@ -15,13 +17,14 @@ const Background = () => {
     }
 
     const mainMovie = movieData[0];
-    const { original_title } = mainMovie;
+    const { original_title ,overview } = mainMovie;
 
 
     return (
-        <div className='flex min-w-full border-2 border-solid'>
-            
-        </div>
+       <div className='pt-36'>
+        <MainContainer title={original_title} description={overview} />
+        <SecondaryContainer movie={movieData}/>
+       </div>
     )
 }
 
