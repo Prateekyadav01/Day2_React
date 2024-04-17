@@ -21,10 +21,10 @@ const Background = () => {
 
 
     return (
-       <div className='pt-36'>
+       <>
         <MainContainer title={original_title} description={overview} />
-        <SecondaryContainer movie={movieData}/>
-       </div>
+        <SecondaryContainer/>
+       </>
     )
 }
 
