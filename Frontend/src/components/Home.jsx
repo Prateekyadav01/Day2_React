@@ -43,7 +43,7 @@ const Home = () => {
 
   return (
     <div class="relative">
-    <div class="absolute top-0 left-0 right-0 px-4 py-2 flex justify-between items-center bg-gray-900 text-white">
+    <div class="absolute top-0 left-0 right-0 px-4 py-2 bg-gradient-to-r from-black flex justify-between items-center text-white">
       <img src={logo} alt="logo" class="w-24" />
       {user && (
         <div class="flex items-center">
