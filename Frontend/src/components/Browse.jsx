@@ -10,10 +10,12 @@ const Browse = () => {
   useBackground()
   return (
     <>
-    <Home/>
+     <div className='overflow-x-hidden'>
+     <Home/>
     
-     <Background/>
-     <Movies/>
+    <Background/>
+    <Movies/>
+     </div>
     
   </>
   )

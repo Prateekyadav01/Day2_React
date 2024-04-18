@@ -2,7 +2,7 @@ import React from 'react';
 
 const MainContainer = ({ title, description }) => {
   return (
-    <div className="absolute top-[25%] left-[10%] transform translate-x-[-50%] bg-gradient-to-r from-black text-white w-[20%] text-center">
+    <div className="absolute  top-[25%] left-[18%] p-6  transform translate-x-[-50%] bg-gradient-to-r from-black text-white w-[30%] text-center">
       <h1 className="text-4xl font-bold mb-4">{title}</h1>
       <p className="text-lg">{description}</p>
 

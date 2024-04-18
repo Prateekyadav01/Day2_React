@@ -9,9 +9,9 @@ const SecondaryContainer = () => {
     
     if(!movieTrailer) return;
     return (
-        <div>
+        <div className=''>
             <iframe 
-            className='w-screen aspect-video'
+            className='w-screen aspect-video overflow-x-hidden'
             src={"https://www.youtube.com/embed/" + movieTrailer?.key + "?&autoplay=1&mute=1"}
             title="YouTube video player" 
             
