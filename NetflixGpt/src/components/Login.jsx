@@ -5,9 +5,10 @@ import ImageBackground from "../assets/images/Background.jpg";
 import { validateData } from '../utils/validate';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/firebase';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addUser } from '../utils/userSlice';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 
 const Login = () => {
@@ -15,7 +16,6 @@ const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState(null);
   const disPatch = useDispatch();
-  const navigate = useNavigate();
   const handleSignup = () => {
     setIsLogin(!isLogin);
   }
@@ -24,48 +24,76 @@ const Login = () => {
   const email = useRef();
   const password = useRef();
   const name = useRef();
+  console.log(email.current, password.current);
 
   const handleValidate = () => {
 
     // console.log(email.current.value,password.current.value);
 
-    let messsage = validateData(email.current.value, password.current.value);
-    // console.log(messsage)
-    setError(messsage);
+    // let messsage = validateData(email.current.value, password.current.value);
+    // // console.log(messsage)
+    // setError(messsage);
 
-    if (messsage) return;
+    // if (messsage) return;
 
     if (!isLogin) {
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-        .then((userCredential) => {
-          // Signed up 
-          const user = userCredential.user;
-          console.log(user);
-          updateProfile(user,{
-            displayName:name.current.value,
-            photoURL:ImageBackground,
+      // createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+      //   .then((userCredential) => {
+      //     // Signed up 
+      //     const user = userCredential.user;
+      //     console.log(user);
+      //     updateProfile(user,{
+      //       displayName:name.current.value,
+      //       photoURL:ImageBackground,
 
-          }).then(()=>{
-            const {uid , email , displayName,photoURL} = auth.currentUser;
-            disPatch(
-              addUser({
-                uid:uid,
-                email:email,
-                displayName:displayName,
-                photoURL:photoURL
-              })
-            )
-          })
-        //  else {
-        //     console.log("no user");
-        //   }
+      //     }).then(()=>{
+      //       const {uid , email , displayName,photoURL} = auth.currentUser;
+      //       disPatch(
+      //         addUser({
+      //           uid:uid,
+      //           email:email,
+      //           displayName:displayName,
+      //           photoURL:photoURL
+      //         })
+      //       )
+      //     })
+
+
+
+
+      // set up the backend here 
+
+      //  else {
+      //     console.log("no user");
+      //   }
+      // }
+      // .catch((error) => {
+      //   const errorCode = error.code;
+      //   const errorMessage = error.message;
+      //   setError(errorCode + "" + errorMessage);
+      //   // ..
+      // });
+
+      axios.post("/api/v1/users/sign", {
+      email:email.current.value,
+      password:password.current.value,
+      userName:name.current.value,
+        
+      },
+        {
+          
         })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setError(errorCode + "" + errorMessage);
-          // ..
-        });
+        .then((response) => {
+          const{email , password , userName} = response.data;
+          disPatch(addUser({
+            email,
+            userName,
+            password,
+          }))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
     else {
       signInWithEmailAndPassword(auth, email.current.value, password.current.value)
@@ -84,7 +112,7 @@ const Login = () => {
 
   return (
     <div className=''>
-      <Home/>
+      <Home />
       <div className='absolute'>
         <img src={ImageBackground} alt="" className='relative' />
       </div>
