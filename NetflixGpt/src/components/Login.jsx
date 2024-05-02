@@ -9,10 +9,11 @@ import { useDispatch } from 'react-redux'
 import { addUser } from '../utils/userSlice';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const Login = () => {
-
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState(null);
   const disPatch = useDispatch();
@@ -20,7 +21,7 @@ const Login = () => {
     setIsLogin(!isLogin);
   }
 
-
+  const notify = () => toast("Wow so easy !");
   const email = useRef();
   const password = useRef();
   const name = useRef();
@@ -96,17 +97,40 @@ const Login = () => {
         })
     }
     else {
-      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-        .then((userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          console.log(user);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setError(errorCode + ': ' + errorMessage);
-        });
+      // signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+      //   .then((userCredential) => {
+      //     // Signed in 
+      //     const user = userCredential.user;
+      //     console.log(user);
+      //   })
+      //   .catch((error) => {
+      //     const errorCode = error.code;
+      //     const errorMessage = error.message;
+      //     setError(errorCode + ': ' + errorMessage);
+      //   });
+
+      axios.post("/api/v1/users/login" , {
+        email:email.current.value,
+        password:password.current.value
+      } )
+      .then((response)=>{
+        console.log(response.data)
+        const {email,password} = response.data;
+        disPatch(addUser({
+          email,
+          password,
+        }))
+        let user = {
+          email,
+          password,
+        }
+        localStorage.setItem('user' , JSON.stringify(user));
+        // navigate('/browse')
+        console.log(email,password);
+      }).catch((e)=>{
+        console.log(e)
+      })
+
     }
   }
 
@@ -142,6 +166,7 @@ const Login = () => {
           !isLogin ? "Signup" : "Signin"
         }</p>
       </form>
+      <ToastContainer/>
     </div>
   )
 }
